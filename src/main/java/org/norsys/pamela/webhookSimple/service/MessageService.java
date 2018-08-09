@@ -65,10 +65,9 @@ public class MessageService {
 
 		logger.debug("=======le message de google {} est en train d'etre ecouter dans le service",
 				messageGoogle + "=============");
-		// envoie du message a la destination
-		// envoyerMessageALaDestination(messageRecuEvent.getMessage(), urlApi);
 
 	}
+	
 	/**
 	 * 
 	 * @param messageRecuEvent : le message de l'utilisateur sur dialogflow
@@ -76,9 +75,6 @@ public class MessageService {
 	 */
 	public ResponseEntity<String> envoiMessage(ArriverMessage messageRecuEvent) {
 		String messageGoogle = messageRecuEvent.getMessage();
-
-		logger.debug("=======le message de google {} est en train d'etre ecouter dans le service",
-				messageGoogle + "=============");
 		this.urlApi = null;
 		
 		String question = messageRecuEvent.getMessage().toLowerCase();

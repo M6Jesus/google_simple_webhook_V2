@@ -18,6 +18,8 @@ import org.norsys.pamela.webhookSimple.model.InterfaceReponses.DifferentTypeRepo
 import org.norsys.pamela.webhookSimple.model.request.QueryResult;
 import org.norsys.pamela.webhookSimple.model.request.Request;
 import org.norsys.pamela.webhookSimple.model.response.Reponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MessageControllerSimplifier {
 	
+	private static final Logger logger = LoggerFactory.getLogger(MessageControllerSimplifier.class);
 	@Autowired
 	UserProvidesFirstName userProvidesFirstName;
 	@Autowired
@@ -72,6 +75,7 @@ public class MessageControllerSimplifier {
 	public ResponseEntity<DifferentTypeReponses> posterUnMessage(@RequestBody final Request request) {	
 		if(webhookActions.isEmpty()) {
 			addAllActions();
+			logger.info("chargement des actions");
 		}
 		
 		QueryResult queryResult = request.getQueryResult();
@@ -80,11 +84,10 @@ public class MessageControllerSimplifier {
 		DifferentTypeReponses reponse = defaultAction.getReponse(request);
 		for(WebhookAction action : webhookActions) {
 			if(action.getActionName().equals(actionToDo)) {
-				reponse = action.getReponse(request);				
+				reponse = action.getReponse(request);
+				logger.info("execution de l'action '{}' ", action.getActionName());
 			}		
 		}
-	
 		return ResponseEntity.status(HttpStatus.OK).body(reponse);
 	}
-
 }
